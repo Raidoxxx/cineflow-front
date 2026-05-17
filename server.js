@@ -6,7 +6,7 @@ import sirv from "sirv";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const port = Number.parseInt(process.env.PORT || "5173", 10);
+const port = Number.parseInt(process.env.PORT || "8080", 10);
 const host = "0.0.0.0";
 
 const distDir = path.join(__dirname, "dist");
@@ -19,4 +19,3 @@ const server = http.createServer((req, res) => {
 server.listen(port, host, () => {
   console.log(`Cineflow Site running on http://${host}:${port}`);
 });
-
