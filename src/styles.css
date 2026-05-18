@@ -52,4 +52,28 @@ body {
   .cf-chip {
     @apply inline-flex items-center gap-1 rounded-full border border-white/10 bg-black/30 px-2.5 py-1 text-xs text-white/80;
   }
+
+  .cf-hero-sweep {
+    @apply pointer-events-none absolute -inset-24 opacity-60 blur-3xl;
+    background: radial-gradient(700px circle at 25% 10%, rgba(255, 70, 85, 0.28), transparent 55%),
+      radial-gradient(900px circle at 78% 30%, rgba(255, 255, 255, 0.10), transparent 60%),
+      radial-gradient(800px circle at 55% 90%, rgba(255, 70, 85, 0.12), transparent 62%);
+    animation: cf-heroSweep 14s ease-in-out infinite;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes cf-heroSweep {
+  0% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+    opacity: 0.48;
+  }
+  45% {
+    transform: translate3d(2%, 1%, 0) scale(1.05);
+    opacity: 0.62;
+  }
+  100% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+    opacity: 0.48;
+  }
 }
