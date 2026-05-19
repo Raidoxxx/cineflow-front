@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview",
+    "dev": "vite --host --config vite.config.js",
+    "build": "tsc -b && vite build --config vite.config.js",
+    "preview": "vite preview --config vite.config.js",
     "start": "node server.js"
   },
   "dependencies": {

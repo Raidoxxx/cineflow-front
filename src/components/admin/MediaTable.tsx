@@ -8,6 +8,13 @@ import { MediaMetaModal } from "./MediaMetaModal";
 import { MediaPreviewModal } from "./MediaPreviewModal";
 import { ProcessingStatusBadge } from "./ProcessingStatusBadge";
 
+function humanizeErrorMessage(msg: unknown) {
+  if (typeof msg !== "string") return "";
+  const s = msg.trim();
+  if (!s) return "";
+  return s.length > 140 ? `${s.slice(0, 140)}…` : s;
+}
+
 function cardPreviewUrl(item: MediaAssetModel) {
   const isVideo = item.type === "VIDEO" || item.mimeType?.startsWith("video/");
   if (isVideo) return item.thumbnailPath ? resolvePublicFileUrl(item.thumbnailPath) : "";
@@ -118,6 +125,15 @@ export function MediaTable({ media, onRefresh }: { media: MediaAssetModel[]; onR
                   </div>
                 ) : null}
 
+                {item.status === "FAILED" ? (
+                  <div
+                    className="rounded-2xl border border-red-500/15 bg-red-500/10 px-3 py-2 text-[11px] text-red-200/90"
+                    title={item.errorMessage ?? undefined}
+                  >
+                    <span className="font-semibold">Falhou.</span> {humanizeErrorMessage(item.errorMessage) || "Sem detalhes do erro."}
+                  </div>
+                ) : null}
+
                 <div className="flex gap-2 pt-1">
                   <Button
                     size="sm"
@@ -145,6 +161,20 @@ export function MediaTable({ media, onRefresh }: { media: MediaAssetModel[]; onR
                     Excluir
                   </Button>
                 </div>
+
+                {item.status === "FAILED" ? (
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="h-9 w-full rounded-2xl"
+                    onClick={async () => {
+                      await api.post(`/admin/media/${item.id}/reprocess`, {});
+                      await onRefresh?.();
+                    }}
+                  >
+                    Reprocessar
+                  </Button>
+                ) : null}
               </div>
             </article>
           );

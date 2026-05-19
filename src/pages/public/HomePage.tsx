@@ -80,7 +80,8 @@ function MediaTile({
   title,
   subtitle,
   showPlay,
-  bigPlay
+  bigPlay,
+  to
 }: {
   src: string;
   className: string;
@@ -89,10 +90,14 @@ function MediaTile({
   subtitle?: string;
   showPlay?: boolean;
   bigPlay?: boolean;
+  to?: string;
 }) {
+  const Wrapper: any = to ? Link : "div";
+
   return (
-    <div
-      className={`group relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-white/[0.04] shadow-[0_24px_90px_rgba(0,0,0,0.55)] ${className}`}
+    <Wrapper
+      {...(to ? { to, "aria-label": title ?? "Abrir galeria" } : {})}
+      className={`group relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-white/[0.04] shadow-[0_24px_90px_rgba(0,0,0,0.55)] ${className} ${to ? "cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF4655]/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#07080A]" : ""}`}
     >
       {src ? (
         <img
@@ -132,7 +137,7 @@ function MediaTile({
           {subtitle ? <p className="mt-0.5 text-xs text-white/60">{subtitle}</p> : null}
         </div>
       ) : null}
-    </div>
+    </Wrapper>
   );
 }
 
@@ -375,6 +380,7 @@ export function HomePage() {
                 <MediaTile
                   src={getCover(heroEvents[0], 0)}
                   className="col-span-5 row-span-3"
+                  to={heroEvents[0] ? `/eventos/${heroEvents[0].slug}` : undefined}
                   title={heroEvents[0]?.title}
                   subtitle={heroEvents[0] ? "Fotos • Vídeo" : undefined}
                 />
@@ -382,6 +388,7 @@ export function HomePage() {
                 <MediaTile
                   src={getCover(heroEvents[1], 1)}
                   className="col-span-7 row-span-3"
+                  to={heroEvents[1] ? `/eventos/${heroEvents[1].slug}` : undefined}
                   badge="Aftermovie"
                   showPlay
                   bigPlay
@@ -390,21 +397,25 @@ export function HomePage() {
                 <MediaTile
                   src={getCover(heroEvents[2], 2)}
                   className="col-span-6 row-span-2"
+                  to={heroEvents[2] ? `/eventos/${heroEvents[2].slug}` : undefined}
                 />
 
                 <MediaTile
                   src={getCover(heroEvents[3], 3)}
                   className="col-span-3 row-span-2"
+                  to={heroEvents[3] ? `/eventos/${heroEvents[3].slug}` : undefined}
                 />
 
                 <MediaTile
                   src={getCover(heroEvents[4], 4)}
                   className="col-span-3 row-span-2"
+                  to={heroEvents[4] ? `/eventos/${heroEvents[4].slug}` : undefined}
                 />
 
                 <MediaTile
                   src={getCover(heroEvents[5], 5)}
                   className="col-span-4 row-span-3"
+                  to={heroEvents[5] ? `/eventos/${heroEvents[5].slug}` : undefined}
                   badge="Prévia disponível"
                   showPlay
                   bigPlay
@@ -413,11 +424,13 @@ export function HomePage() {
                 <MediaTile
                   src={getCover(heroEvents[6], 6)}
                   className="col-span-4 row-span-3"
+                  to={heroEvents[6] ? `/eventos/${heroEvents[6].slug}` : undefined}
                 />
 
                 <MediaTile
                   src={getCover(heroEvents[7], 7)}
                   className="col-span-4 row-span-3"
+                  to={heroEvents[7] ? `/eventos/${heroEvents[7].slug}` : undefined}
                 />
               </div>
             </div>

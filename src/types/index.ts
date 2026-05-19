@@ -27,6 +27,7 @@ export interface MediaAssetModel {
   status: MediaStatus;
   processingProgress?: number | null;
   mimeType: string;
+  errorMessage?: string | null;
   createdAt: string;
 }
 

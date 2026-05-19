@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CalendarDays, ChevronRight, Clock, Image as ImageIcon, Play } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EventModel } from "../../types";
@@ -7,6 +7,7 @@ import { Button } from "../ui/Button";
 import { resolveAlternatePublicFileUrl, resolvePublicFileUrl } from "../../services/api";
 
 export function EventCard({ event, theme = "light" }: { event: EventModel; theme?: "light" | "dark" }) {
+  const navigate = useNavigate();
   const available = Boolean(event.isPublic && event.isActive);
   const expDate = new Date(event.expiresAt).toLocaleDateString("pt-BR");
   const eventDate = event.eventDate ? new Date(event.eventDate).toLocaleDateString("pt-BR") : undefined;
@@ -24,9 +25,22 @@ export function EventCard({ event, theme = "light" }: { event: EventModel; theme
     <article
       className={
         isDark
-          ? "group overflow-hidden rounded-3xl border border-white/10 bg-[#141418] shadow-[0_28px_120px_rgba(0,0,0,0.45)] transition-all hover:-translate-y-1 hover:border-white/20"
-          : "group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_18px_60px_rgba(17,24,39,0.08)] transition-all hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_22px_90px_rgba(17,24,39,0.12)]"
+          ? "group cursor-pointer overflow-hidden rounded-3xl border border-white/10 bg-[#141418] shadow-[0_28px_120px_rgba(0,0,0,0.45)] transition-all hover:-translate-y-1 hover:border-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF4655]/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08090B]"
+          : "group cursor-pointer overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_18px_60px_rgba(17,24,39,0.08)] transition-all hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_22px_90px_rgba(17,24,39,0.12)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6C63FF]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
       }
+      role="link"
+      tabIndex={0}
+      onClick={(e) => {
+        const target = e.target as HTMLElement | null;
+        if (target?.closest("a,button")) return;
+        navigate(`/eventos/${event.slug}`);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          navigate(`/eventos/${event.slug}`);
+        }
+      }}
     >
       <div className={isDark ? "relative aspect-[16/10] overflow-hidden bg-black" : "relative aspect-[16/10] overflow-hidden bg-slate-100"}>
         {coverSrc && !coverError ? (
